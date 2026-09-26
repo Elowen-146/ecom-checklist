@@ -50,7 +50,7 @@ function render(filter){
   DATA.forEach(function(it, i){
     if (f && it.name.toLowerCase().indexOf(f) === -1) return;
     shown++;
-    const key = it.file.replace(/^pdfs\//,'').replace(/\.pdf$/,'');
+    const key = it.file.replace(/^pdfs2?\//,'').replace(/\.pdf$/,'');
     const a = document.createElement('a');
     a.className = 'card' + (it.isIndex ? ' index-card' : '');
     a.href = 'view.html?f=' + key;
