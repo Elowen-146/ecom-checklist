@@ -53,7 +53,7 @@ function render(filter){
     const key = it.file.replace(/^pdfs2?\//,'').replace(/\.pdf$/,'');
     const a = document.createElement('a');
     a.className = 'card' + (it.isIndex ? ' index-card' : '');
-    a.href = 'view.html?v=20260926f&f=' + key;
+    a.href = 'view.html?v=20260926g&f=' + key;
     const idx = document.createElement('div');
     idx.className = 'idx';
     idx.textContent = it.isIndex ? '目' : (i + 1);
