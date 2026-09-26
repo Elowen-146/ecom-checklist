@@ -44,7 +44,7 @@ if (!item){
   document.title = item.name;
   titleEl.textContent = item.name;
   // cache-bust：绕开 CDN/浏览器缓存的 404（如部署窗口期被缓存的 Not Found）
-  const pdf = item.file + '?v=20260926e';
+  const pdf = item.file + '?v=20260926f';
   dlEl.href = pdf;
   openEl.href = pdf;
   if (/MicroMessenger/i.test(navigator.userAgent)){
