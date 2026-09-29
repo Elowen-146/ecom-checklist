@@ -1,9 +1,73 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ECMO 查检表全集（47 份）</title>
-<meta http-equiv="refresh" content="0;url=index.pdf?v=1790698801">
-</head><body style="font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;padding:24px;line-height:1.7">
-<p>正在打开索引 PDF…</p>
-<p>若未自动跳转，请 <a href="index.pdf?v=1790698801">点此打开索引 PDF</a>。</p>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f6f8">
+<title>ECMO 查检表全集</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+background:#f5f6f8;min-height:100vh;color:#1c2333;padding-bottom:34px}
+.hd{padding:26px 18px 14px;text-align:center}
+.hd h1{font-size:23px;color:#1a6fe8;letter-spacing:.5px}
+.hd p{font-size:12.5px;color:#8a919f;margin-top:7px;line-height:1.65}
+.searchwrap{padding:8px 16px 2px}
+.search{display:flex;align-items:center;background:#fff;border-radius:10px;height:44px;padding:0 14px;
+box-shadow:0 1px 2px rgba(30,40,60,.04)}
+.search svg{flex:0 0 18px;margin-right:9px;opacity:.45}
+.search input{flex:1;border:0;outline:0;font-size:15px;background:transparent;color:#1c2333}
+.search input::placeholder{color:#b3bac6}
+.count{text-align:center;font-size:12px;color:#9aa1ad;margin:12px 0 4px}
+.list{padding:4px 14px 0}
+.item{display:flex;align-items:center;background:#fff;border-radius:12px;padding:13px 14px;
+margin-bottom:10px;box-shadow:0 1px 3px rgba(30,40,60,.05);text-decoration:none;color:inherit;
+transition:transform .06s}
+.item:active{transform:scale(.985)}
+.bd{flex:0 0 34px;height:34px;border-radius:8px;background:linear-gradient(180deg,#2f83ec,#1a6fe8);
+color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-right:12px}
+.tt{flex:1;font-size:15.5px;line-height:1.45;min-width:0}
+.tag{display:inline-block;font-size:11px;color:#fff;background:#ff9f1a;border-radius:5px;
+padding:1.5px 7px;margin-left:7px;vertical-align:1px;font-weight:600}
+.ar{flex:0 0 18px;color:#c3c9d4;font-size:19px;text-align:center;margin-left:6px}
+.empty{text-align:center;color:#9aa1ad;font-size:13.5px;padding:30px 0;display:none}
+.ft{text-align:center;font-size:11px;color:#b3bac6;margin-top:20px;line-height:1.8}
+</style></head><body>
+<div class="hd">
+  <h1>ECMO 查检表全集</h1>
+  <p>手机扫码 · 点击条目打开 Word 文档 · 可查看 / 打印 / 编辑<br>
+  共 <span id="tt">48</span> 份 · 按表号顺序排列 · 点「总目录」打开 PDF 版索引</p>
+</div>
+<div class="searchwrap"><div class="search">
+  <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="#5a6474" stroke-width="2.2" stroke-linecap="round" d="M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Zm10 2.5-4.9-4.9"/></svg>
+  <input id="q" type="search" placeholder="搜索表号或关键字，如：撤机 / 转运 / VA" autocomplete="off">
+</div></div>
+<div class="count">显示 <span id="cc">48</span> / 48 份</div>
+<div class="list" id="ls"></div>
+<div class="empty" id="ep">没有匹配的表单，换个关键词试试</div>
+<div class="ft">永久有效 · 二维码不变<br>ECMO 查检表 · 重症医学科</div>
+<script>
+var DATA = [{"n": 1, "t": "表1 ECMO 设备及耗材日常核查清单(1)", "u": "word/表1 ECMO 设备及耗材日常核查清单(1).docx"}, {"n": 2, "t": "表2 ECMO 设备及耗材日常核查清单(2)", "u": "word/表2 ECMO 设备及耗材日常核查清单(2).docx"}, {"n": 3, "t": "表3 ECMO 设备及耗材日常核查清单(3)", "u": "word/表3 ECMO 设备及耗材日常核查清单(3).docx"}, {"n": 4, "t": "表4 ECMO 操作及质量评价表(1)", "u": "word/表4 ECMO 操作及质量评价表(1).docx"}, {"n": 5, "t": "表5 ECMO 操作及质量评价表(2)", "u": "word/表5 ECMO 操作及质量评价表(2).docx"}, {"n": 6, "t": "表6 ECMO 操作及质量评价表(3)", "u": "word/表6 ECMO 操作及质量评价表(3).docx"}, {"n": 7, "t": "表7  ECMO 操作及质量评价表(4)", "u": "word/表7  ECMO 操作及质量评价表(4).docx"}, {"n": 8, "t": "表8  VA-ECMO 临床启动快速筛查评估表(1)", "u": "word/表8  VA-ECMO 临床启动快速筛查评估表(1).docx"}, {"n": 9, "t": "表9  VA-ECMO 临床启动快速筛查评估表(2)", "u": "word/表9  VA-ECMO 临床启动快速筛查评估表(2).docx"}, {"n": 10, "t": "表10  VV-ECMO 临床启动快速筛查评估表(1)", "u": "word/表10  VV-ECMO 临床启动快速筛查评估表(1).docx"}, {"n": 11, "t": "表11  VV-ECMO 临床启动快速筛查评估表(2)", "u": "word/表11  VV-ECMO 临床启动快速筛查评估表(2).docx"}, {"n": 12, "t": "表12 ECPR（体外心肺复苏）专项流程：适应症与禁忌症", "u": "word/表12 ECPR（体外心肺复苏）专项流程：适应症与禁忌症.docx"}, {"n": 13, "t": "表13 ECPR（体外心肺复苏）专项流程：上机", "u": "word/表13 ECPR（体外心肺复苏）专项流程：上机.docx"}, {"n": 14, "t": "表14 ECPR（体外心肺复苏）专项流程：预后", "u": "word/表14 ECPR（体外心肺复苏）专项流程：预后.docx"}, {"n": 15, "t": "表15  VA-ECMO 治疗前预测生存率评估单（SAVE评分）", "u": "word/表15  VA-ECMO 治疗前预测生存率评估单（SAVE评分）.docx"}, {"n": 16, "t": "表16  VV-ECMO 治疗前预测生存率评估单（RESP评分）", "u": "word/表16  VV-ECMO 治疗前预测生存率评估单（RESP评分）.docx"}, {"n": 17, "t": "表17  ECMO（体外膜肺氧合）治疗知情同意书", "u": "word/表17  ECMO（体外膜肺氧合）治疗知情同意书.docx"}, {"n": 18, "t": "表18  ECMO 治疗启动参数设置与初始管理表(1)", "u": "word/表18  ECMO 治疗启动参数设置与初始管理表(1).docx"}, {"n": 19, "t": "表19  ECMO 治疗启动参数设置与初始管理表(2)", "u": "word/表19  ECMO 治疗启动参数设置与初始管理表(2).docx"}, {"n": 20, "t": "表20  ECMO 治疗启动参数设置与初始管理表(3)", "u": "word/表20  ECMO 治疗启动参数设置与初始管理表(3).docx"}, {"n": 21, "t": "表21  ECMO 治疗启动参数设置与初始管理表(4)", "u": "word/表21  ECMO 治疗启动参数设置与初始管理表(4).docx"}, {"n": 22, "t": "表22  VA-ECMO 患者的监测与管理规范(1-9)", "u": "word/表22  VA-ECMO 患者的监测与管理规范(1-9).docx"}, {"n": 23, "t": "表23   VA-ECMO 并发症监测与管理速查表", "u": "word/表23   VA-ECMO 并发症监测与管理速查表.docx"}, {"n": 24, "t": "表24 VV-ECMO监测与管理规范：核心监测参数(1)", "u": "word/表24 VV-ECMO监测与管理规范：核心监测参数(1).docx"}, {"n": 25, "t": "表25 VV-ECMO监测与管理规范：核心监测参数(2)", "u": "word/表25 VV-ECMO监测与管理规范：核心监测参数(2).docx"}, {"n": 26, "t": "表26 VV-ECMO监测与管理规范：特有的核心概念", "u": "word/表26 VV-ECMO监测与管理规范：特有的核心概念.docx"}, {"n": 27, "t": "表27 VV-ECMO监测与管理规范：结构化监测计划", "u": "word/表27 VV-ECMO监测与管理规范：结构化监测计划.docx"}, {"n": 28, "t": "表28 VV-ECMO监测与管理规范：每日管理规范（ABCD）", "u": "word/表28 VV-ECMO监测与管理规范：每日管理规范（ABCD）.docx"}, {"n": 29, "t": "表29 VV-ECMO监测与管理规范：每日管理规范（E）", "u": "word/表29 VV-ECMO监测与管理规范：每日管理规范（E）.docx"}, {"n": 30, "t": "表30 VV-ECMO监测与管理规范：特殊情况管理规范", "u": "word/表30 VV-ECMO监测与管理规范：特殊情况管理规范.docx"}, {"n": 31, "t": "表31 ECMO 重症超声可视化管理 SOP 打卡单：上机前评估", "u": "word/表31 ECMO 重症超声可视化管理 SOP 打卡单：上机前评估.docx"}, {"n": 32, "t": "表32 ECMO 重症超声可视化管理 SOP 打卡单：运行中评估（A-B）", "u": "word/表32 ECMO 重症超声可视化管理 SOP 打卡单：运行中评估（A-B）.docx"}, {"n": 33, "t": "表33 ECMO 重症超声可视化管理 SOP 打卡单：运行中评估（C-D）", "u": "word/表33 ECMO 重症超声可视化管理 SOP 打卡单：运行中评估（C-D）.docx"}, {"n": 34, "t": "表34 ECMO 重症超声可视化管理 SOP 打卡单：撤机前后评估", "u": "word/表34 ECMO 重症超声可视化管理 SOP 打卡单：撤机前后评估.docx"}, {"n": 35, "t": "表35  ECMO每日检查记录单(A-B)", "u": "word/表35  ECMO每日检查记录单(A-B).docx"}, {"n": 36, "t": "表36  ECMO每日检查记录单(C)", "u": "word/表36  ECMO每日检查记录单(C).docx"}, {"n": 37, "t": "表37  ECMO每日检查记录单(D)", "u": "word/表37  ECMO每日检查记录单(D).docx"}, {"n": 38, "t": "表38  ECMO每日检查记录单(E)", "u": "word/表38  ECMO每日检查记录单(E).docx"}, {"n": 39, "t": "表39  ECMO 患者神经功能监测与脑保护多模态管理表(1-4)", "u": "word/表39  ECMO 患者神经功能监测与脑保护多模态管理表(1-4).docx"}, {"n": 40, "t": "表40 ECMO 紧急驱动器（手摇泵）使用流程", "u": "word/表40 ECMO 紧急驱动器（手摇泵）使用流程.docx"}, {"n": 41, "t": "表41 ECMO 氧代谢评估与容量复苏决策通道（1）", "u": "word/表41 ECMO 氧代谢评估与容量复苏决策通道（1）.docx"}, {"n": 42, "t": "表42 ECMO 氧代谢评估与容量复苏决策通道（2）", "u": "word/表42 ECMO 氧代谢评估与容量复苏决策通道（2）.docx"}, {"n": 43, "t": "表43  ECMO 患者转运流程：院内转运（1）", "u": "word/表43  ECMO 患者转运流程：院内转运（1）.docx"}, {"n": 44, "t": "表44  ECMO 患者转运流程：院内转运（2）", "u": "word/表44  ECMO 患者转运流程：院内转运（2）.docx"}, {"n": 45, "t": "表45  ECMO 患者转运流程：院际及ECPR转运", "u": "word/表45  ECMO 患者转运流程：院际及ECPR转运.docx"}, {"n": 46, "t": "表46  VV-ECMO 撤机流程(1-4)", "u": "word/表46  VV-ECMO 撤机流程(1-4).docx"}, {"n": 47, "t": "表47  VA-ECMO 撤机流程(1-6)", "u": "word/表47  VA-ECMO 撤机流程(1-6).docx"}];
+var ls = document.getElementById('ls'), q = document.getElementById('q'),
+    cc = document.getElementById('cc'), ep = document.getElementById('ep');
+var html = '<a class="item" href="index.pdf"><span class="bd">目</span><span class="tt">ECMO checklist 目录<span class="tag">总目录</span></span><span class="ar">›</span></a>';
+for (var i = 0; i < DATA.length; i++) {
+  var d = DATA[i];
+  html += '<a class="item" data-k="' + d.t.replace(/"/g,'') + '" href="' + encodeURI(d.u) + '">' +
+          '<span class="bd">' + d.n + '</span><span class="tt">' + d.t + '</span><span class="ar">›</span></a>';
+}
+ls.innerHTML = html;
+var items = ls.getElementsByClassName('item');
+function flt(){
+  var k = q.value.trim().toLowerCase(), v = 0;
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i];
+    var hay = ((it.getAttribute('data-k') || '') + ' ' + (i === 0 ? '总目录 目录 index' : '')).toLowerCase();
+    var show = !k || hay.indexOf(k) >= 0 || /\d+$/.test(k) && it.querySelector('.bd').textContent === k;
+    it.style.display = show ? '' : 'none';
+    if (show) v++;
+  }
+  cc.textContent = v; ep.style.display = v ? 'none' : 'block';
+}
+q.addEventListener('input', flt);
+</script>
 </body></html>
