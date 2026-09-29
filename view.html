@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="bar">
-  <a href="index.html?v=20260929w">← 返回</a>
+  <a href="index.html?v=20260929x">← 返回</a>
   <div class="title" id="title">加载中…</div>
   <a class="dl" id="dl" href="#" download>⬇ 下载Word</a>
 </div>
@@ -92,15 +92,60 @@ const pagesEl = document.getElementById('pages');
 const tipEl = document.getElementById('tip');
 const errEl = document.getElementById('err');
 const dlEl = document.getElementById('dl');
-function docxUrl(it){ return 'docx/' + encodeURIComponent(it.name) + '.docx?v=20260929w'; }
-function showErr(msg){
-  tipEl.style.display = 'none';
-  errEl.style.display = 'block';
-  errEl.innerHTML = '加载失败：' + msg +
-    '<br><br><button id="retryBtn" style="font-size:17px;padding:10px 34px;border-radius:8px;border:1px solid #9db4d0;background:#fff;color:#1a4d8f">重 试</button>' +
-    (item ? '　<a href="' + docxUrl(item) + '" download>下载 Word 版</a>' : '');
-  const rb = document.getElementById('retryBtn');
-  if (rb) rb.onclick = function(){ errEl.style.display = 'none'; tipEl.style.display = ''; tipEl.style.opacity = '1'; pagesEl.innerHTML = ''; boot(); };
+function docxUrl(it){ return 'docx/' + encodeURIComponent(it.name) + '.docx?v=20260929x'; }
+/* 多源镜像：主源失败自动换源，永不出现死掉的报错页 */
+const MIRRORS = [
+  '',
+  'https://raw.githubusercontent.com/Elowen-146/ecom-checklist/main/',
+  'https://gcore.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/',
+  'https://fastly.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/',
+  'https://cdn.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/'
+];
+function loadPage(base, i, wrap, isFirst){
+  const path = 'imgs2/' + base + '/' + String(i).padStart(3,'0') + '.jpg';
+  let round = 0;
+  function attempt(){
+    const urls = [];
+    for (let m = 0; m < MIRRORS.length; m++){
+      urls.push(MIRRORS[m] + path + '?v=20260929x&t=' + Date.now() + '_' + m);
+    }
+    let k = 0, timer = null;
+    function tryOnce(){
+      const img = new Image();
+      img.loading = (isFirst && k === 0 && round === 0) ? 'eager' : 'lazy';
+      img.decoding = 'async';
+      img.alt = item.name + ' 第' + i + '页';
+      img.onload = function(){
+        if (timer){ clearTimeout(timer); timer = null; }
+        wrap.innerHTML = '';
+        wrap.appendChild(img);
+        pageLoaded();
+      };
+      img.onerror = function(){
+        k++;
+        if (k < urls.length){ setTimeout(tryOnce, 120 * k); }
+        else {
+          /* 一轮全部失败：显示轻提示卡片并自动开始下一轮，永不停在报错页 */
+          k = 0; round++;
+          wrap.innerHTML = '<div style="padding:22px 14px;text-align:center;color:#6b7280;font-size:14px;line-height:1.9">网络有点慢，正在自动重试（第' + round + '轮）…<br>' +
+            '<a href="' + docxUrl(item) + '" download style="color:#1a73e8;font-weight:600">先下载 Word 版 →</a></div>';
+          timer = setTimeout(function(){ tryLoop(); }, 3500);
+        }
+      };
+      img.src = urls[k];
+    }
+    function tryLoop(){ if (timer){ clearTimeout(timer); timer = null; } tryOnce(); }
+    tryLoop();
+  }
+  attempt();
+}
+let loadedCount = 0;
+function pageLoaded(){
+  loadedCount++;
+  if (loadedCount === 1){
+    tipEl.style.opacity = '0';
+    setTimeout(function(){ tipEl.style.display = 'none'; }, 400);
+  }
 }
 function boot(){
   if (!item){ errEl.style.display = 'block'; errEl.textContent = '链接无效，请返回首页'; tipEl.style.display = 'none'; return; }
@@ -109,22 +154,13 @@ function boot(){
   dlEl.href = docxUrl(item);   // Word 原版直链：下载 / 打印 / 可编辑
   const base = item.file.replace(/\.pdf$/,'');
   const n = PAGES[base] || 1;
-  let loaded = 0;
   tipEl.textContent = '加载中…';
   for (let i = 1; i <= n; i++){
     const wrap = document.createElement('div');
     wrap.className = 'pgwrap';
-    const img = document.createElement('img');
-    img.loading = (i === 1) ? 'eager' : 'lazy';   // 首屏优先，其余滚动到才加载
-    img.decoding = 'async';
-    img.alt = item.name + ' 第' + i + '页';
-    img.src = 'imgs2/' + base + '/' + String(i).padStart(3,'0') + '.jpg?v=20260929w';
-    img.onload = function(){ loaded++; if (loaded === 1){ tipEl.style.opacity = '0'; setTimeout(function(){ tipEl.style.display='none'; }, 400); } };
-    img.onerror = function(){ wrap.innerHTML = '<div style="padding:18px;text-align:center;color:#b00">本页图片加载失败，请点顶部"重试"或下拉刷新</div>'; };
-    wrap.appendChild(img);
     pagesEl.appendChild(wrap);
+    loadPage(base, i, wrap, i === 1);
   }
-  if (n === 1){ /* 单页立即隐藏提示 */ }
 }
 boot();
 </script>
