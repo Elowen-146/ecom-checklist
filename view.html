@@ -20,12 +20,10 @@
   .err{text-align:center;color:#fff;padding:40px 20px;font-size:14px}
   .err a{color:#9ecbff}
 </style>
-<script src="js/pdf.min.js"></script>
-<script src="js/pdf.worker.min.js"></script>
 </head>
 <body>
 <div class="bar">
-  <a href="index.html?v=20260926k">← 返回</a>
+  <a href="index.html?v=20260926l">← 返回</a>
   <div class="title" id="title">加载中…</div>
   <a class="dl" id="dl" href="#">⬇ 下载</a>
 </div>
@@ -53,15 +51,69 @@ if (!item){
 } else {
   document.title = item.name;
   titleEl.textContent = item.name;
-  const pdfUrl = item.file + '?v=20260926k';
-  dlEl.href = pdfUrl;   // 原版 PDF 直链：下载 / 打印用
-  render(pdfUrl);
+  dlEl.href = item.file + '?v=20260926l';   // 原版 PDF 直链：下载 / 打印用
+  boot();
 }
-async function render(url){
+/* 多线路加速：GitHub Pages 直连 → jsDelivr → gcore(jsDelivr国内节点) */
+const MIRRORS = [
+  '',
+  'https://cdn.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/',
+  'https://gcore.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/'
+];
+function showErr(msg){
+  tipEl.style.display = 'none';
+  errEl.style.display = 'block';
+  errEl.innerHTML = '加载失败：' + msg +
+    '<br><br><a href="' + (item ? item.file + '?v=20260926l' : '#') + '">点此直接打开 PDF</a>（或点右上角 ⬇ 下载）';
+}
+function loadScript(srcs){
+  return new Promise(function(resolve, reject){
+    let i = 0;
+    (function next(){
+      if (i >= srcs.length){ reject(new Error('渲染器加载失败')); return; }
+      const s = document.createElement('script');
+      s.src = srcs[i++];
+      s.onload = function(){ resolve(); };
+      s.onerror = function(){ s.remove(); next(); };
+      document.head.appendChild(s);
+    })();
+  });
+}
+function getDocWithFallback(){
+  const urls = MIRRORS.map(function(m){ return m + item.file + (m === '' ? '?v=20260926l' : ''); });
+  return new Promise(function(resolve, reject){
+    let i = 0;
+    (function tryNext(){
+      if (i >= urls.length){ reject(new Error('所有线路均超时或失败')); return; }
+      const u = urls[i++];
+      tipEl.textContent = '正在加载 PDF…（线路 ' + i + '）';
+      let lastPct = -1;
+      const task = window.pdfjsLib.getDocument({ url: u });
+      task.onProgress = function(d){
+        if (d && d.total && d.loaded){
+          const p = Math.min(99, Math.round(d.loaded / d.total * 100));
+          if (p !== lastPct){ lastPct = p; tipEl.textContent = '正在加载 PDF… ' + p + '%（线路 ' + i + '）'; }
+        }
+      };
+      const timer = setTimeout(function(){
+        try{ task.destroy(); }catch(e){}
+        tryNext();
+      }, 15000);
+      task.promise.then(
+        function(doc){ clearTimeout(timer); resolve(doc); },
+        function(){ clearTimeout(timer); tryNext(); }
+      );
+    })();
+  });
+}
+async function boot(){
+  try{
+    await loadScript(MIRRORS.map(function(m){ return m + 'js/pdf.min.js'; }));
+    await loadScript(MIRRORS.map(function(m){ return m + 'js/pdf.worker.min.js'; }));
+  }catch(e){ showErr('渲染器加载失败，请检查网络后重试'); return; }
   try{
     const pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;
-    // worker 已通过 <script> 引入主线程（globalThis.pdfjsWorker），无需 workerSrc
-    const doc = await pdfjsLib.getDocument({url: url}).promise;
+    const doc = await getDocWithFallback();
     tipEl.textContent = '共 ' + doc.numPages + ' 页，正在渲染…';
     // 逐页渲染：宽度自适应容器，按 devicePixelRatio 保证清晰度
     for (let n = 1; n <= doc.numPages; n++){
@@ -89,10 +141,7 @@ async function render(url){
       }
     }
   }catch(e){
-    tipEl.style.display = 'none';
-    errEl.style.display = 'block';
-    errEl.innerHTML = '加载失败：' + (e && e.message ? e.message : e) +
-      '<br><br><a href="' + url + '">点此直接打开 PDF</a>（或点右上角 ⬇ 下载）';
+    showErr(e && e.message ? e.message : e);
   }
 }
 </script>

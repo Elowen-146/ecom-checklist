@@ -30,7 +30,7 @@
 </style>
 </head>
 <body>
-<img class="logo" src="logo.jpg?v=20260926k" alt="徽重症">
+<img class="logo" src="logo.jpg?v=20260926l" alt="徽重症">
 <header>
   <h1>ECMO 查检表全集</h1>
   <div class="sub">手机扫码 · 直接打开PDF · 可查看 / 打印 / 下载<br>共 <span id="total"></span> 份 · 按表号顺序排列</div>
@@ -55,7 +55,7 @@ function render(filter){
     const key = it.file.replace(/^pdfs2?\//,'').replace(/\.pdf$/,'');
     const a = document.createElement('a');
     a.className = 'card' + (it.isIndex ? ' index-card' : '');
-    a.href = 'view.html?v=20260926k&f=' + key;
+    a.href = 'view.html?v=20260926l&f=' + key;
     const idx = document.createElement('div');
     idx.className = 'idx';
     idx.textContent = it.isIndex ? '目' : (i + 1);
