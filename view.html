@@ -20,11 +20,11 @@
   .err{text-align:center;color:#fff;padding:40px 20px;font-size:14px}
   .err a{color:#9ecbff}
 </style>
-<script src="js/pdf.min.js?v=20260926o"></script>
+<script src="js/pdf.min.js?v=20260926p"></script>
 </head>
 <body>
 <div class="bar">
-  <a href="index.html?v=20260926o">← 返回</a>
+  <a href="index.html?v=20260926p">← 返回</a>
   <div class="title" id="title">加载中…</div>
   <a class="dl" id="dl" href="#">⬇ 下载</a>
 </div>
@@ -44,6 +44,14 @@ const tipEl = document.getElementById('tip');
 const errEl = document.getElementById('err');
 const dlEl = document.getElementById('dl');
 const scrollEl = document.getElementById('scroll');
+/* 多线路加速：GitHub Pages 同源优先 → jsDelivr → gcore → fastly（仅用于 PDF 数据下载，渲染器走同域静态脚本）
+   注意：必须声明在 boot() 调用之前，否则 const TDZ 报 "Cannot access 'MIRRORS' before initialization" */
+const MIRRORS = [
+  '',
+  'https://cdn.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/',
+  'https://gcore.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/',
+  'https://fastly.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/'
+];
 if (!item){
   titleEl.textContent = '未找到该表单';
   tipEl.style.display = 'none';
@@ -52,22 +60,15 @@ if (!item){
 } else {
   document.title = item.name;
   titleEl.textContent = item.name;
-  dlEl.href = item.file + '?v=20260926o';   // 原版 PDF 直链：下载 / 打印用
+  dlEl.href = item.file + '?v=20260926p';   // 原版 PDF 直链：下载 / 打印用
   boot();
 }
-/* 多线路加速：GitHub Pages 直连 → jsDelivr → gcore → fastly (jsDelivr多入口) */
-const MIRRORS = [
-  '',
-  'https://cdn.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/',
-  'https://gcore.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/',
-  'https://fastly.jsdelivr.net/gh/Elowen-146/ecom-checklist@main/'
-];
 function showErr(msg){
   tipEl.style.display = 'none';
   errEl.style.display = 'block';
   errEl.innerHTML = '加载失败：' + msg +
     '<br><br><button id="retryBtn" style="font-size:17px;padding:10px 34px;border-radius:8px;border:1px solid #9db4d0;background:#fff;color:#1a4d8f">重 试</button>' +
-    '　<a href="' + (item ? item.file + '?v=20260926o' : '#') + '">直接打开 PDF</a>（或点右上角 ⬇ 下载）';
+    '　<a href="' + (item ? item.file + '?v=20260926p' : '#') + '">直接打开 PDF</a>（或点右上角 ⬇ 下载）';
   const rb = document.getElementById('retryBtn');
   if (rb) rb.onclick = function(){
     errEl.style.display = 'none';
@@ -92,7 +93,7 @@ function loadScript(srcs){
   });
 }
 function getDocWithFallback(){
-  const urls = MIRRORS.map(function(m){ return m + item.file + (m === '' ? '?v=20260926o' : ''); });
+  const urls = MIRRORS.map(function(m){ return m + item.file + (m === '' ? '?v=20260926p' : ''); });
   return new Promise(function(resolve, reject){
     let i = 0;
     (function tryNext(){
@@ -123,10 +124,10 @@ async function boot(){
   let pdfjsLib = window.pdfjsLib;
   if (!pdfjsLib){
     // 同域静态脚本偶发未加载，则补一次同域加载
-    try{ await loadScript(['js/pdf.min.js?v=20260926o']); pdfjsLib = window.pdfjsLib; }catch(e){}
+    try{ await loadScript(['js/pdf.min.js?v=20260926p']); pdfjsLib = window.pdfjsLib; }catch(e){}
   }
   if (!pdfjsLib){ showErr('渲染器加载失败，请检查网络后重试'); return; }
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'js/pdf.worker.min.js?v=20260926o';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'js/pdf.worker.min.js?v=20260926p';
   try{
     const pdfjsLib = window['pdfjs-dist/build/pdf'] || window.pdfjsLib;
     const doc = await getDocWithFallback();
