@@ -23,7 +23,7 @@
 </head>
 <body>
 <div class="bar">
-  <a href="index.html?v=20260929y">← 返回</a>
+  <a href="index.html?v=20260929z">← 返回</a>
   <div class="title" id="title">加载中…</div>
   <a class="dl" id="dl" href="#" download>⬇ 下载Word</a>
 </div>
@@ -92,7 +92,7 @@ const pagesEl = document.getElementById('pages');
 const tipEl = document.getElementById('tip');
 const errEl = document.getElementById('err');
 const dlEl = document.getElementById('dl');
-function docxUrl(it){ return 'docx/' + encodeURIComponent(it.name) + '.docx?v=20260929y'; }
+function docxUrl(it){ return 'docx/' + encodeURIComponent(it.name) + '.docx?v=20260929z'; }
 /* 多源镜像：主源失败自动换源，永不出现死掉的报错页 */
 const MIRRORS = [
   '',
@@ -107,7 +107,7 @@ function loadPage(base, i, wrap, isFirst){
   function attempt(){
     const urls = [];
     for (let m = 0; m < MIRRORS.length; m++){
-      urls.push(MIRRORS[m] + path + '?v=20260929y&t=' + Date.now() + '_' + m);
+      urls.push(MIRRORS[m] + path + '?v=20260929z&t=' + Date.now() + '_' + m);
     }
     let k = 0, timer = null;
     function tryOnce(){
@@ -152,7 +152,8 @@ function boot(){
   document.title = item.name;
   titleEl.textContent = item.name;
   dlEl.href = docxUrl(item);   // Word 原版直链：下载 / 打印 / 可编辑
-  const base = item.file.replace(/\.pdf$/,'');
+  // 必须同时去掉 pdfs2/ 前缀：预览图真实目录是 imgs2/p01/，不是 imgs2/pdfs2/p01/
+  const base = item.file.replace(/^pdfs2?\//,'').replace(/\.pdf$/,'');
   const n = PAGES[base] || 1;
   tipEl.textContent = '加载中…';
   for (let i = 1; i <= n; i++){
