@@ -41,13 +41,13 @@ border-radius:7px;margin-left:8px;white-space:nowrap}
 <div class="hd">
   <h1>ECMO 查检表全集</h1>
   <p>点条目看查检表 · 查看页顶栏可下载 <b style="color:#1a6fe8">PDF版</b> / <b style="color:#1a6fe8">Word版</b><br>
-  共 <span id="tt">48</span> 份 · 按表号顺序排列</p>
+  共 <span id="tt">47</span> 份 · 按表号顺序排列</p>
 </div>
 <div class="searchwrap"><div class="search">
   <svg viewBox="0 0 24 24" width="18" height="18"><path fill="none" stroke="#5a6474" stroke-width="2.2" stroke-linecap="round" d="M10.5 18a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Zm10 2.5-4.9-4.9"/></svg>
   <input id="q" type="search" placeholder="搜索表号或关键字，如：撤机 / 转运 / VA" autocomplete="off">
 </div></div>
-<div class="count">显示 <span id="cc">48</span> / 48 份</div>
+<div class="count">显示 <span id="cc">47</span> / 47 份</div>
 <div class="list" id="ls"></div>
 <div class="empty" id="ep">没有匹配的表单，换个关键词试试</div>
 <div class="ft">永久有效 · 二维码不变<br>ECMO 查检表 · 重症医学科</div>
@@ -68,6 +68,7 @@ for (var i = 0; i < DATA.length; i++) {
 }
 ls.innerHTML = h;
 var items = ls.getElementsByClassName('item');
+cc.textContent = items.length - 1;  // 减掉"总目录"卡片，仅计实际查检表
 ls.addEventListener('click', function (e) {
   var it = e.target.closest ? e.target.closest('.item') : null;
   if (!it) return;
@@ -83,7 +84,7 @@ function flt(){
     var show = !k || hay.indexOf(k) >= 0 ||
       (/\d+$/.test(k) && (it.querySelector('.bd').textContent === k || hay.indexOf('\u8868' + k) >= 0));
     it.style.display = show ? '' : 'none';
-    if (show) v++;
+    if (show && it.getAttribute('data-i')) v++;  // 仅计实际查检表，不含总目录卡片
   }
   cc.textContent = v; ep.style.display = v ? 'none' : 'block';
 }
