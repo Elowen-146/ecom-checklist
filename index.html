@@ -73,7 +73,9 @@ ls.addEventListener('click', function (e) {
   if (!it) return;
   var b = e.target.closest ? e.target.closest('.dl') : null;
   if (b && it.getAttribute('data-w')) { location.href = encodeURI(it.getAttribute('data-w')); return; }
-  location.href = encodeURI(it.getAttribute('data-p'));
+  location.href = 'view.html?f=' + encodeURIComponent(it.getAttribute('data-p')) +
+    '&w=' + encodeURIComponent(it.getAttribute('data-w') || '') +
+    '&t=' + encodeURIComponent(it.getAttribute('data-k') || '');
 });
 function flt(){
   var k = q.value.trim().toLowerCase(), v = 0;
