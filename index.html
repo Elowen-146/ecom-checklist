@@ -72,6 +72,8 @@ cc.textContent = items.length - 1;  // 减掉"总目录"卡片，仅计实际查
 ls.addEventListener('click', function (e) {
   var it = e.target.closest ? e.target.closest('.item') : null;
   if (!it) return;
+  // 总目录卡片：直接打开 index.pdf（PDF 内条目可点击跳转），不走图片查看页
+  if (!it.getAttribute('data-i')) { location.href = it.getAttribute('data-p'); return; }
   var p = function (k) { return encodeURIComponent(it.getAttribute(k) || ''); };
   location.href = 'view.html?i=' + p('data-i') + '&p=' + p('data-p') + '&w=' + p('data-w') +
     '&t=' + p('data-t') + '&pg=' + encodeURIComponent(it.getAttribute('data-pg') || '1');
